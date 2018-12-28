@@ -10,6 +10,7 @@ class Register extends React.Component {
     password: "",
     passwordConfirmation: "",
     errors: [],
+    loading: false,
   };
 
   isFormValid = () => {
@@ -51,22 +52,25 @@ class Register extends React.Component {
   };
 
   handleSubmit = event => {
+    event.preventDefault();
     if (this.isFormValid()) {
-      event.preventDefault();
+      this.setState({ errors: [], loading: true });
       firebase
         .auth()
         .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(createdUser => {
           console.log(createdUser);
+          this.setState({ loading: false });
         })
         .catch(err => {
           console.error(err);
+          this.setState({ errors: this.state.errors.concat(err), loading: false });
         });
     }
   }
 
   render() {
-    const { username, email, password, passwordConfirmation, errors } = this.state;
+    const { username, email, password, passwordConfirmation, errors, loading } = this.state;
 
     return (
 
@@ -86,7 +90,7 @@ class Register extends React.Component {
 
               <Form.Input fluid name="passwordConfirmation" icon="repeat" iconPosition="left" placeholder="Password Confirmation" onChange={this.handleChange} value={passwordConfirmation} type="password" />
 
-              <Button color="orange">Submit</Button>
+              <Button disabled={loading} className={loading ? 'loading' : ''} color="orange">Submit</Button>
             </Segment>
           </Form>
           {errors.length > 0 && (
