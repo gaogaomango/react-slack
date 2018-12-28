@@ -49,12 +49,12 @@ class Register extends React.Component {
 
   displayErrors = errors => errors.map((error, i) => <p key={i}>{error.message}</p>);
 
-saveUser = createdUser => {
-  return this.state.usersRef.child(createdUser.user.uid).set({
-    name: createdUser.user.displayName,
-    avater: createdUser.user.photoURL
-  });
-}
+  saveUser = createdUser => {
+    return this.state.usersRef.child(createdUser.user.uid).set({
+      name: createdUser.user.displayName,
+      avater: createdUser.user.photoURL
+    });
+  }
   handleChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -100,7 +100,7 @@ saveUser = createdUser => {
 
       <Grid textAlign="center" verticalAlign="middle" className="app">
         <Grid.Column style={{ maxWidth: 450 }}>
-          <Header as="h2" icon color="orange" textAlign="center">
+          <Header as="h1" icon color="orange" textAlign="center">
             <Icon name="puzzle piece" color="orange" />
             Register for DevChat
           </Header>
