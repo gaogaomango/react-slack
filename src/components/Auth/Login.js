@@ -44,7 +44,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const { username, email, password, passwordConfirmation, errors, loading } = this.state;
+    const { email, password, errors, loading } = this.state;
 
     return (
 
