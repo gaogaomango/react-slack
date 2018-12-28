@@ -19,4 +19,5 @@ const App = () => (
     </Grid.Column>
   </Grid>
 );
+
 export default App;
