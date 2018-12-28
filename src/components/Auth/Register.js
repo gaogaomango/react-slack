@@ -67,6 +67,10 @@ class Register extends React.Component {
           this.setState({ errors: this.state.errors.concat(err), loading: false });
         });
     }
+  };
+
+  handleInputError = (errors, inputName) => {
+    return errors.some(error => error.message.toLowerCase().includes(inputName)) ? 'error' : ''
   }
 
   render() {
@@ -84,11 +88,11 @@ class Register extends React.Component {
             <Segment stacked>
               <Form.Input fluid name="username" icon="user" iconPosition="left" placeholder="User Name" onChange={this.handleChange} value={username} type="text" />
 
-              <Form.Input fluid name="email" icon="mail" iconPosition="left" placeholder="Email Address" onChange={this.handleChange} value={email} type="email" />
+              <Form.Input fluid name="email" icon="mail" iconPosition="left" placeholder="Email Address" onChange={this.handleChange} value={email} className={this.handleInputError(errors, 'email')} type="email" />
 
-              <Form.Input fluid name="password" icon="lock" iconPosition="left" placeholder="Password" onChange={this.handleChange} value={password} type="password" />
+              <Form.Input fluid name="password" icon="lock" iconPosition="left" placeholder="Password" onChange={this.handleChange} value={password} className={this.handleInputError(errors, 'password')} type="password" />
 
-              <Form.Input fluid name="passwordConfirmation" icon="repeat" iconPosition="left" placeholder="Password Confirmation" onChange={this.handleChange} value={passwordConfirmation} type="password" />
+              <Form.Input fluid name="passwordConfirmation" icon="repeat" iconPosition="left" placeholder="Password Confirmation" onChange={this.handleChange} value={passwordConfirmation} className={this.handleInputError(errors, 'password')} type="password" />
 
               <Button disabled={loading} className={loading ? 'loading' : ''} color="orange">Submit</Button>
             </Segment>
