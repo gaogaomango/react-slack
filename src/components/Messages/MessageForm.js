@@ -27,6 +27,7 @@ class MessageForm extends React.Component {
     };
     return message;
   };
+
   sendMessage = () => {
     const { messagesRef } = this.props;
     const { message, channel } = this.state;
