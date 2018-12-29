@@ -19,6 +19,10 @@ class DirectMessages extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
   addListener = currentUserUId => {
     let loadedUsers = [];
     this.state.usersRef.on("child_added", snap => {
@@ -54,6 +58,12 @@ class DirectMessages extends React.Component {
         this.addStatusToUser(snap.key, false);
       }
     });
+  };
+
+  removeListener = () => {
+    this.state.usersRef.off();
+    this.state.connectedRed.off();
+    this.state.presenceRef.off();
   };
 
   addStatusToUser = (userId, connected = true) => {
