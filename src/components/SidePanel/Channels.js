@@ -20,12 +20,20 @@ class Channels extends React.Component {
     this.addListeners();
   }
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
   addListeners = () => {
     let loadedChanells = [];
     this.state.channelsRef.on("child_added", snap => {
       loadedChanells.push(snap.val());
       this.setState({ channels: loadedChanells }, () => this.setFirstChannel());
     });
+  };
+
+  removeListener = () => {
+    this.state.channelsRef.off();
   };
 
   setFirstChannel = () => {
