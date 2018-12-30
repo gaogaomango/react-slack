@@ -38,7 +38,15 @@ class Messages extends React.Component {
   };
 
   removeListener = () => {
+    //  if this event set off, notification event will set off as well.
+    // const { channel, user } = this.state;
+    // if (channel && user) {
+    //   this.getMessagesRef()
+    //     .child(channel.id)
+    //     .off();
+    // }
     this.state.messagesRef.off();
+    this.state.privateMessagesRef.off();
   };
 
   addMessageListener = channelId => {

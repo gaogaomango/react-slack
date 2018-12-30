@@ -19,6 +19,14 @@ class MessageForm extends React.Component {
     modal: false
   };
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
+  removeListener = () => {
+    this.state.uploadTask && this.state.uploadTask.off();
+  };
+
   openModal = () => this.setState({ modal: true });
 
   closeModal = () => this.setState({ modal: false });
