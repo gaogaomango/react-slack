@@ -1,4 +1,5 @@
 import React from "react";
+import firebase from "../../firebase";
 import {
   Sidebar,
   Menu,
@@ -15,12 +16,35 @@ class ColorPanel extends React.Component {
   state = {
     modal: false,
     primary: "",
-    secondary: ""
+    secondary: "",
+    user: this.props.currentUser,
+    usersRef: firebase.database().ref("users")
   };
 
   handleChangePrimary = color => this.setState({ primary: color.hex });
 
   handleChangeSecondary = color => this.setState({ secondary: color.hex });
+
+  handleSaveColors = () => {
+    if (this.state.primary && this.state.secondary) {
+      this.saveColors(this.state.primary, this.state.secondary);
+    }
+  };
+
+  saveColors = (primary, secondary) => {
+    this.state.usersRef
+      .child(`${this.state.user.uid}/colors`)
+      .push()
+      .update({
+        primary,
+        secondary
+      })
+      .then(() => {
+        console.log("Colors added");
+        this.closeModal();
+      })
+      .catch(err => console.log(err));
+  };
 
   openModal = () => this.setState({ modal: true });
 
@@ -61,7 +85,7 @@ class ColorPanel extends React.Component {
             </Segment>
           </Modal.Content>
           <Modal.Actions>
-            <Button color="green" inverted>
+            <Button color="green" inverted onClick={this.handleSaveColors}>
               <Icon name="checkmark" /> Add
             </Button>
             <Button color="red" inverted onClick={this.closeModal}>
