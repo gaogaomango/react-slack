@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import * as actionTypes from "../actions/types";
+import * as Config from "../Config";
 
 const initialUserState = {
   currentUser: null,
@@ -51,15 +52,18 @@ const channel_reducer = (state = initialChannelState, action) => {
   }
 };
 
-const initialColorsState = {
-  primaryColor: "#4c3c4c",
-  secondaryColor: "#eee"
-};
+// const initialColorsState = {
+//   primaryColor: "#4c3c4c",
+//   secondaryColor: "#eee"
+// };
+
+const initialColorsState = Config.initialColors;
 
 const colors_reducer = (state = initialColorsState, action) => {
   switch (action.type) {
     case actionTypes.SET_COLORS:
       return {
+        ...state,
         primaryColor: action.payload.primaryColor,
         secondaryColor: action.payload.secondaryColor
       };

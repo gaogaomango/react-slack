@@ -13,12 +13,13 @@ import {
   Segment
 } from "semantic-ui-react";
 import { SliderPicker } from "react-color";
+import * as Config from "../../Config";
 
 class ColorPanel extends React.Component {
   state = {
     modal: false,
-    primary: "",
-    secondary: "",
+    primaryColor: "",
+    secondaryColor: "",
     user: this.props.currentUser,
     usersRef: firebase.database().ref("users"),
     userColors: []
@@ -32,6 +33,7 @@ class ColorPanel extends React.Component {
 
   addListener = userId => {
     let userColors = [];
+    userColors.unshift(Config.initialColors);
     this.state.usersRef.child(`${userId}/colors`).on("child_added", snap => {
       userColors.unshift(snap.val());
       console.log(userColors);
@@ -39,23 +41,25 @@ class ColorPanel extends React.Component {
     });
   };
 
-  handleChangePrimary = color => this.setState({ primary: color.hex });
+  handleChangePrimaryColor = color =>
+    this.setState({ primaryColor: color.hex });
 
-  handleChangeSecondary = color => this.setState({ secondary: color.hex });
+  handleChangeSecondaryColor = color =>
+    this.setState({ secondaryColor: color.hex });
 
   handleSaveColors = () => {
-    if (this.state.primary && this.state.secondary) {
-      this.saveColors(this.state.primary, this.state.secondary);
+    if (this.state.primaryColor && this.state.secondaryColor) {
+      this.saveColors(this.state.primaryColor, this.state.secondaryColor);
     }
   };
 
-  saveColors = (primary, secondary) => {
+  saveColors = (primaryColor, secondaryColor) => {
     this.state.usersRef
       .child(`${this.state.user.uid}/colors`)
       .push()
       .update({
-        primary,
-        secondary
+        primaryColor,
+        secondaryColor
       })
       .then(() => {
         console.log("Colors added");
@@ -71,12 +75,17 @@ class ColorPanel extends React.Component {
         <Divider />
         <div
           className="color__container"
-          onClick={() => this.props.setColors(color.primary, color.secondary)}
+          onClick={() =>
+            this.props.setColors(color.primaryColor, color.secondaryColor)
+          }
         >
-          <div className="color__square" style={{ background: color.primary }}>
+          <div
+            className="color__square"
+            style={{ background: color.primaryColor }}
+          >
             <div
               className="color__overlay"
-              style={{ background: color.secondary }}
+              style={{ background: color.secondaryColor }}
             />
           </div>
         </div>
@@ -88,7 +97,7 @@ class ColorPanel extends React.Component {
   closeModal = () => this.setState({ modal: false });
 
   render() {
-    const { modal, primary, secondary, userColors } = this.state;
+    const { modal, primaryColor, secondaryColor, userColors } = this.state;
 
     return (
       <Sidebar
@@ -110,15 +119,15 @@ class ColorPanel extends React.Component {
             <Segment inverted>
               <Label content="Primary Color" />
               <SliderPicker
-                color={primary}
-                onChange={this.handleChangePrimary}
+                color={primaryColor}
+                onChange={this.handleChangePrimaryColor}
               />
             </Segment>
             <Segment inverted>
-              <Label content="Secondary Color" />
+              <Label content="SecondaryColor Color" />
               <SliderPicker
-                color={secondary}
-                onChange={this.handleChangeSecondary}
+                color={secondaryColor}
+                onChange={this.handleChangeSecondaryColor}
               />
             </Segment>
           </Modal.Content>
