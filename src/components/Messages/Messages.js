@@ -276,7 +276,11 @@ class Messages extends React.Component {
     ));
 
   isProgressBarVisible = percent => {
-    if (percent > 0) {
+    if (percent === 100) {
+      this.setState({
+        progressBar: false
+      });
+    } else if (percent > 0) {
       this.setState({
         progressBar: true
       });
