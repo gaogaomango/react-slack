@@ -31,6 +31,10 @@ class ColorPanel extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.removeListener();
+  }
+
   addListener = userId => {
     let userColors = [];
     userColors.unshift(Config.initialColors);
@@ -38,6 +42,10 @@ class ColorPanel extends React.Component {
       userColors.unshift(snap.val());
       this.setState({ userColors: userColors });
     });
+  };
+
+  removeListener = () => {
+    this.state.usersRef.child(`${this.state.user.uid}/colors`).off();
   };
 
   handleChangePrimaryColor = color =>
